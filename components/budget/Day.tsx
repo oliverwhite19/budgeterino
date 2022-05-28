@@ -11,8 +11,8 @@ const Day = ({ date, lineItems }: Props) => {
         <Accordion>
             <Accordion.Item eventKey="0">
                 <Accordion.Header>{date}</Accordion.Header>
-                {lineItems.map((item) => (
-                    <LineItem {...item} />
+                {lineItems.map((item, index) => (
+                    <LineItem {...item} key={index} />
                 ))}
             </Accordion.Item>
         </Accordion>

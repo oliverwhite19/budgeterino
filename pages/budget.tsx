@@ -1,6 +1,6 @@
 import Day from '../components/budget/Day';
-import useLocalStorage from 'react-localstorage-hook';
 import AddLineItem from '../components/budget/AddLineItem';
+import useStorage from '../hooks/useStorage';
 export type budgetItem = {
     title: string;
     date: string;
@@ -29,17 +29,16 @@ const itemsToDays = (items: budgetItem[]): { [k: string]: budgetItem[] } => {
     return ordered;
 };
 const Budget = () => {
-    let itemsAsDays: { [k: string]: budgetItem[] } = {};
-    if (typeof window !== 'undefined') {
-        const [items]: [budgetItem[]] = useLocalStorage('items', []);
-        itemsAsDays = itemsToDays(items);
-    }
+    const { getItem } = useStorage();
+    const items = getItem('items', [], 'local');
+    console.log(items);
+    const itemsAsDays = itemsToDays(items);
 
     return (
         <div>
             <AddLineItem />
             {Object.values(itemsAsDays).map((value) => (
-                <Day date={value[0].date} lineItems={value} />
+                <Day date={value[0].date} lineItems={value} key={value[0].date} />
             ))}
         </div>
     );

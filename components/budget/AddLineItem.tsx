@@ -2,17 +2,13 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import { budgetItem } from '../../pages/budget';
-import useLocalStorage from 'react-localstorage-hook';
+import useStorage from '../../hooks/useStorage';
 
 const AddLineItem = () => {
     const [show, setShow] = useState(false);
     const [validated, setValidated] = useState(false);
-    let setItems = (items: budgetItem[]) => {};
-    let items: budgetItem[] = [];
-    if (typeof window !== 'undefined') {
-        [items, setItems] = useLocalStorage('items', []);
-    }
+    const { getItem, setItem } = useStorage();
+    const items = getItem('items', [], 'local');
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -25,7 +21,7 @@ const AddLineItem = () => {
         }
 
         setValidated(true);
-        setItems([
+        setItem('items', [
             ...items,
             {
                 title: event.target.formBasicTitle.value,
