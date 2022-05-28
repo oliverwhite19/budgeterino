@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import useStorage from '../../hooks/useStorage';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 
 const AddLineItem = () => {
     const [show, setShow] = useState(false);
@@ -38,9 +41,16 @@ const AddLineItem = () => {
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                Add New Item
-            </Button>
+            <Container fluid>
+                <Row>
+                    <ButtonGroup aria-label="Basic example">
+                        <Button variant="outline-danger" onClick={handleShow}>
+                            Add New Expense
+                        </Button>
+                        <Button variant="outline-success">Add New Income</Button>
+                    </ButtonGroup>
+                </Row>
+            </Container>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
