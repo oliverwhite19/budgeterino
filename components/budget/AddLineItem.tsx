@@ -16,7 +16,17 @@ const AddLineItem = () => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const handleSubmit = (event) => {
+    const handleSubmit = (event: {
+        currentTarget: any;
+        preventDefault: () => void;
+        stopPropagation: () => void;
+        target: {
+            formBasicTitle: { value: any };
+            dot: { value: any };
+            formBasicQuantity: { value: any };
+            formBasicCurrency: { value: any };
+        };
+    }) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
