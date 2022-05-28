@@ -28,10 +28,10 @@ const itemsToDays = (items: budgetItem[]): { [k: string]: budgetItem[] } => {
         }, {});
     return ordered;
 };
+
 const Budget = () => {
     const { getItem } = useStorage();
     const items = getItem('items', [], 'local');
-    console.log(items);
     const itemsAsDays = itemsToDays(items);
 
     return (
