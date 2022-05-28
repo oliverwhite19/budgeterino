@@ -26,6 +26,9 @@ const Menu = () => {
                 <Nav.Item>
                     <Nav.Link href="/budget">Budget History</Nav.Link>
                 </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link href="/settings">Settings</Nav.Link>
+                </Nav.Item>
             </Nav>
             <Offcanvas show={show} onHide={handleClose}>
                 <Offcanvas.Header closeButton>

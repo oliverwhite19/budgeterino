@@ -24,16 +24,20 @@ const AddLineItem = () => {
         }
 
         setValidated(true);
-        setItem('items', [
-            ...items,
-            {
-                title: event.target.formBasicTitle.value,
-                date: event.target.dot.value,
-                direction: 'out',
-                value: event.target.formBasicQuantity.value,
-                currency: event.target.formBasicCurrency.value,
-            },
-        ]);
+        setItem(
+            'items',
+            [
+                ...items,
+                {
+                    title: event.target.formBasicTitle.value,
+                    date: event.target.dot.value,
+                    direction: 'out',
+                    value: event.target.formBasicQuantity.value,
+                    currency: event.target.formBasicCurrency.value,
+                },
+            ],
+            'local',
+        );
 
         event.preventDefault();
         setShow(false);
