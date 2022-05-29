@@ -8,6 +8,7 @@ import { addMonths, endOfMonth, format, isAfter, isBefore, parse, startOfMonth, 
 import { Button, Navbar } from 'react-bootstrap';
 import { CaretLeft, CaretRight } from 'react-bootstrap-icons';
 import { styled } from '@stitches/react';
+import { defaultSettings } from './settings';
 
 export const TitleContainer = styled('div', {
     display: 'flex',
@@ -44,12 +45,18 @@ const itemsToDays = (items: budgetItem[], start: Date, end: Date): { [k: string]
 const Budget = () => {
     const { getItem } = useStorage();
     const localItems = getItem('items', [], 'local');
+    const settings = getItem('settings', defaultSettings, 'local');
     const [items, setItems] = useState(localItems);
 
     const [currentDate, setCurrentDate] = useState(new Date());
     const itemsAsDays = itemsToDays(items, startOfMonth(currentDate), endOfMonth(currentDate));
     const monthTotal = Object.values(itemsAsDays).reduce(
-        (acc, items) => acc + items.reduce((accum, item) => (item.direction === 'out' ? accum - item.value : accum), 0),
+        (acc, items) =>
+            acc +
+            items.reduce(
+                (accum, item) => (item.direction === 'out' || !settings.budgetMode ? accum - item.value : accum),
+                0,
+            ),
         0,
     );
     const budgetModeCounter = 2200;
@@ -70,7 +77,7 @@ const Budget = () => {
                     <Day date={value[0].date} lineItems={value} key={value[0].date} />
                 ))}
             </div>
-            <Navbar fixed="bottom">{budgetModeCounter + monthTotal}</Navbar>
+            <Navbar fixed="bottom">{settings.budgetMode ? settings.budget + monthTotal : monthTotal}</Navbar>
         </>
     );
 };
