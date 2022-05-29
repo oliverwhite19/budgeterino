@@ -32,9 +32,9 @@ const Menu = () => {
             </Nav>
             <Offcanvas show={show} onHide={handleClose}>
                 <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>Settings</Offcanvas.Title>
+                    <Offcanvas.Title>Filters</Offcanvas.Title>
                 </Offcanvas.Header>
-                <Offcanvas.Body>Here is where the settings will be located</Offcanvas.Body>
+                <Offcanvas.Body>Here is where the filters will be located</Offcanvas.Body>
             </Offcanvas>
         </>
     );

@@ -1,12 +1,14 @@
 import Day from '../components/budget/Day';
 import AddLineItem from '../components/budget/AddLineItem';
 import useStorage from '../hooks/useStorage';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
 export type budgetItem = {
-    title: string;
+    description: string;
     date: string;
     direction: string;
     value: number;
-    currency: string;
+    currency?: string;
 };
 
 const itemsToDays = (items: budgetItem[]): { [k: string]: budgetItem[] } => {
@@ -31,12 +33,13 @@ const itemsToDays = (items: budgetItem[]): { [k: string]: budgetItem[] } => {
 
 const Budget = () => {
     const { getItem } = useStorage();
-    const items = getItem('items', [], 'local');
+    const localItems = getItem('items', [], 'local');
+    const [items, setItems] = useState(localItems);
     const itemsAsDays = itemsToDays(items);
 
     return (
         <div>
-            <AddLineItem />
+            <AddLineItem addItem={(item) => setItems([...items, item])} />
             {Object.values(itemsAsDays).map((value) => (
                 <Day date={value[0].date} lineItems={value} key={value[0].date} />
             ))}
@@ -44,4 +47,6 @@ const Budget = () => {
     );
 };
 
-export default Budget;
+export default dynamic(() => Promise.resolve(Budget), {
+    ssr: false,
+});

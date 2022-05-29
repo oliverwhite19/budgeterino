@@ -4,7 +4,10 @@ import Row from 'react-bootstrap/Row';
 const Settings = () => {
     return (
         <Container>
-            <Row>Setting</Row>
+            <Row>Categories</Row>
+            <Row>Accounts</Row>
+            <Row>Categories</Row>
+            <Row>Settings</Row>
         </Container>
     );
 };

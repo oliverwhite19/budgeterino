@@ -1,17 +1,27 @@
-import Accordion from 'react-bootstrap/Accordion';
+import { Card, Accordion } from 'react-bootstrap';
+import { LineContainer, ValueContainer } from './Day';
 
 export type LineItemProps = {
-    title: string;
+    description: string;
     direction: string;
     value: number;
-    currency: string;
+    currency?: string;
 };
 
-const LineItem = ({ title, direction, value, currency }: LineItemProps) => {
+const LineItem = ({ description, direction, value, currency }: LineItemProps) => {
     return (
         <Accordion.Body>
-            {title} {value}
-            {currency}
+            <Card>
+                <Card.Body>
+                    <LineContainer>
+                        <div>Category Name //Category Icon//</div>
+                        <ValueContainer color={direction === 'in' ? `green` : 'red'}>
+                            {direction === 'in' ? `+${value} ${currency ?? ''}` : `-${value} ${currency ?? ''}`}
+                        </ValueContainer>
+                    </LineContainer>
+                    <Card.Text>{description}</Card.Text>
+                </Card.Body>
+            </Card>
         </Accordion.Body>
     );
 };
