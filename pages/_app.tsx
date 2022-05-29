@@ -4,12 +4,21 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Menu from '../components/navigation/Menu';
 import styles from '../styles/Home.module.css';
 import Image from 'next/image';
+import Head from 'next/head';
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <>
+            <Head>
+                <title>Budgeterino</title>
+                <meta name="description" content="Budget App for Budget People" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+
             <Menu />
-            <Component {...pageProps} />
+            <main className={styles.main}>
+                <Component {...pageProps} />
+            </main>
 
             <footer className={styles.footer}>
                 <a

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button, ButtonGroup, Container, Form, Modal, Row } from 'react-bootstrap';
 import useStorage from '../../hooks/useStorage';
-import { budgetItem } from '../../pages/budget';
+import { budgetItem } from '../../pages';
 
 const AddLineItem = ({ addItem }: { addItem: (item: budgetItem) => void }) => {
     const [show, setShow] = useState(false);

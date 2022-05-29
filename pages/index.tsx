@@ -1,23 +1,52 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import Day from '../components/budget/Day';
+import AddLineItem from '../components/budget/AddLineItem';
+import useStorage from '../hooks/useStorage';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+export type budgetItem = {
+    description: string;
+    date: string;
+    direction: string;
+    value: number;
+    currency?: string;
+};
 
-const Home: NextPage = () => {
+const itemsToDays = (items: budgetItem[]): { [k: string]: budgetItem[] } => {
+    const itemsInDays = items.reduce((previousValue: { [k: string]: budgetItem[] }, currentValue) => {
+        const dateString = currentValue.date;
+        if (previousValue[dateString]) {
+            previousValue[dateString].push(currentValue);
+        } else {
+            previousValue[dateString] = [currentValue];
+        }
+        return previousValue;
+    }, {});
+    const ordered = Object.keys(itemsInDays)
+        .sort()
+        .reverse()
+        .reduce((obj: { [k: string]: budgetItem[] }, key) => {
+            obj[key] = itemsInDays[key];
+            return obj;
+        }, {});
+    return ordered;
+};
+
+const Budget = () => {
+    const { getItem } = useStorage();
+    const localItems = getItem('items', [], 'local');
+    const [items, setItems] = useState(localItems);
+    const itemsAsDays = itemsToDays(items);
+
     return (
-        <div className={styles.container}>
-            <Head>
-                <title>Budgeterino</title>
-                <meta name="description" content="Budget App for Budget People" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-
-            <main className={styles.main}>
-                <h1>Budgeterino</h1>
-                <p>The best budget web app</p>
-                <h3>Coming soon</h3>
-            </main>
+        <div>
+            <AddLineItem addItem={(item) => setItems([...items, item])} />
+            {Object.values(itemsAsDays).map((value) => (
+                <Day date={value[0].date} lineItems={value} key={value[0].date} />
+            ))}
         </div>
     );
 };
 
-export default Home;
+export default dynamic(() => Promise.resolve(Budget), {
+    ssr: false,
+});

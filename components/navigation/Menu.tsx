@@ -21,10 +21,7 @@ const Menu = () => {
                     </Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link href="/">Home</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link href="/budget">Budget History</Nav.Link>
+                    <Nav.Link href="/">Budget History</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link href="/settings">Settings</Nav.Link>
