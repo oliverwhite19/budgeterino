@@ -5,7 +5,7 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { budgetItem } from '../types';
 import { addMonths, endOfMonth, format, isAfter, isBefore, parse, startOfMonth, subMonths } from 'date-fns';
-import { Button } from 'react-bootstrap';
+import { Button, Navbar } from 'react-bootstrap';
 import { CaretLeft, CaretRight } from 'react-bootstrap-icons';
 import { styled } from '@stitches/react';
 
@@ -48,6 +48,11 @@ const Budget = () => {
 
     const [currentDate, setCurrentDate] = useState(new Date());
     const itemsAsDays = itemsToDays(items, startOfMonth(currentDate), endOfMonth(currentDate));
+    const monthTotal = Object.values(itemsAsDays).reduce(
+        (acc, items) => acc + items.reduce((accum, item) => (item.direction === 'out' ? accum - item.value : accum), 0),
+        0,
+    );
+    const budgetModeCounter = 2200;
     return (
         <>
             <TitleContainer>
@@ -65,6 +70,7 @@ const Budget = () => {
                     <Day date={value[0].date} lineItems={value} key={value[0].date} />
                 ))}
             </div>
+            <Navbar fixed="bottom">{budgetModeCounter + monthTotal}</Navbar>
         </>
     );
 };
