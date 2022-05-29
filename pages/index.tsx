@@ -3,13 +3,7 @@ import AddLineItem from '../components/budget/AddLineItem';
 import useStorage from '../hooks/useStorage';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-export type budgetItem = {
-    description: string;
-    date: string;
-    direction: string;
-    value: number;
-    currency?: string;
-};
+import { budgetItem } from '../types';
 
 const itemsToDays = (items: budgetItem[]): { [k: string]: budgetItem[] } => {
     const itemsInDays = items.reduce((previousValue: { [k: string]: budgetItem[] }, currentValue) => {

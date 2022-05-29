@@ -1,20 +1,17 @@
 import { Card, Accordion } from 'react-bootstrap';
+import { budgetItem } from '../../types';
+import CategoryItem from './CategoryItem';
 import { LineContainer, ValueContainer } from './Day';
 
-export type LineItemProps = {
-    description: string;
-    direction: string;
-    value: number;
-    currency?: string;
-};
+export type LineItemProps = budgetItem;
 
-const LineItem = ({ description, direction, value, currency }: LineItemProps) => {
+const LineItem = ({ description, direction, value, currency, category }: LineItemProps) => {
     return (
         <Accordion.Body>
             <Card>
                 <Card.Body>
                     <LineContainer>
-                        <div>Category Name //Category Icon//</div>
+                        <CategoryItem category={category} />
                         <ValueContainer color={direction === 'in' ? `green` : 'red'}>
                             {direction === 'in' ? `+${value} ${currency ?? ''}` : `-${value} ${currency ?? ''}`}
                         </ValueContainer>

@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { Button, ButtonGroup, Container, Form, Modal, Row } from 'react-bootstrap';
 import useStorage from '../../hooks/useStorage';
-import { budgetItem } from '../../pages';
+import { budgetItem, Category } from '../../types';
+import { defaultCategories } from '../settings/categories';
 
 const AddLineItem = ({ addItem }: { addItem: (item: budgetItem) => void }) => {
     const [show, setShow] = useState(false);
     const [validated, setValidated] = useState(false);
     const { getItem, setItem } = useStorage();
     const items = getItem('items', [], 'local');
+    const categories = getItem('categories', defaultCategories, 'local');
     const [mode, setMode] = useState('out');
 
     const handleClose = () => setShow(false);
@@ -28,6 +30,7 @@ const AddLineItem = ({ addItem }: { addItem: (item: budgetItem) => void }) => {
             date: event.target.date.value,
             direction: mode,
             value: parseFloat(event.target.value.value),
+            category: categories.find((category: Category) => category.name === event.target.category.value),
         };
         setValidated(true);
         setItem('items', [...items, item], 'local');
@@ -39,18 +42,16 @@ const AddLineItem = ({ addItem }: { addItem: (item: budgetItem) => void }) => {
 
     return (
         <>
-            <Container fluid>
-                <Row>
-                    <ButtonGroup aria-label="Basic example">
-                        <Button variant="outline-danger" onClick={() => handleShow('out')}>
-                            Add New Expense
-                        </Button>
-                        <Button variant="outline-success" onClick={() => handleShow('in')}>
-                            Add New Income
-                        </Button>
-                    </ButtonGroup>
-                </Row>
-            </Container>
+            <Row>
+                <ButtonGroup aria-label="Basic example">
+                    <Button variant="outline-danger" onClick={() => handleShow('out')}>
+                        Add New Expense
+                    </Button>
+                    <Button variant="outline-success" onClick={() => handleShow('in')}>
+                        Add New Income
+                    </Button>
+                </ButtonGroup>
+            </Row>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -58,6 +59,16 @@ const AddLineItem = ({ addItem }: { addItem: (item: budgetItem) => void }) => {
                 </Modal.Header>
                 <Container>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                        <Form.Group controlId="category">
+                            <Form.Label>Category</Form.Label>
+                            <Form.Select required>
+                                {categories
+                                    .filter((category: Category) => category.direction === mode)
+                                    .map((category: Category) => (
+                                        <option>{category.name}</option>
+                                    ))}
+                            </Form.Select>
+                        </Form.Group>
                         <Form.Group controlId="description">
                             <Form.Label>Description</Form.Label>
                             <Form.Control type="text" placeholder="Enter description" />
