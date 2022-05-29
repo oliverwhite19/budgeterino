@@ -65,7 +65,7 @@ const AddLineItem = ({ addItem }: { addItem: (item: budgetItem) => void }) => {
                                 {categories
                                     .filter((category: Category) => category.direction === mode)
                                     .map((category: Category) => (
-                                        <option>{category.name}</option>
+                                        <option key={category.name}>{category.name}</option>
                                     ))}
                             </Form.Select>
                         </Form.Group>

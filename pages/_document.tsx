@@ -7,7 +7,6 @@ export default class Document extends NextDocument {
         return (
             <Html lang="en">
                 <Head>
-                    <title>Budgeterino</title>
                     <meta name="description" content="Budget App for Budget People" />
                     <link rel="icon" href="/favicon.ico" />
                     <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
