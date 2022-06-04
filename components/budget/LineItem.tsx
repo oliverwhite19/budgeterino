@@ -5,13 +5,15 @@ import { LineContainer, ValueContainer } from './Day';
 
 export type LineItemProps = budgetItem;
 
-const LineItem = ({ description, direction, value, currency, category }: LineItemProps) => {
+const LineItem = ({ description, direction, value, currency, categories }: LineItemProps) => {
     return (
         <Accordion.Body>
             <Card>
                 <Card.Body>
                     <LineContainer>
-                        <CategoryItem category={category} />
+                        {categories.map((category) => (
+                            <CategoryItem category={category} />
+                        ))}
                         <ValueContainer color={direction === 'in' ? `green` : 'red'}>
                             {direction === 'in' ? `+${value} ${currency ?? ''}` : `-${value} ${currency ?? ''}`}
                         </ValueContainer>

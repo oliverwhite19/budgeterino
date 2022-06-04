@@ -4,11 +4,13 @@ import { Button, ButtonGroup, Container, Form, Modal, Row } from 'react-bootstra
 import { budgetStore } from '../../library/storage';
 import { categoryStore } from '../../library/storage/categories';
 import { Category } from '../../types';
+import Select from 'react-select';
 
 const AddLineItem = () => {
     const [show, setShow] = useState(false);
     const [validated, setValidated] = useState(false);
     const [mode, setMode] = useState('out');
+    const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
     const categories = categoryStore((state) => state.categories);
     const addItem = budgetStore((state) => state.addItem);
 
@@ -19,8 +21,7 @@ const AddLineItem = () => {
     };
     const handleSubmit = (event: any) => {
         const form = event.currentTarget;
-        const category = categories.find((category: Category) => category.name === event.target.category.value);
-        if (form.checkValidity() === false || !category) {
+        if (form.checkValidity() === false || !selectedCategories.length) {
             event.preventDefault();
             event.stopPropagation();
             return;
@@ -30,7 +31,7 @@ const AddLineItem = () => {
             date: event.target.date.value,
             direction: mode,
             value: parseFloat(event.target.value.value),
-            category,
+            categories: selectedCategories,
             id: nanoid(10),
         };
         setValidated(true);
@@ -62,13 +63,13 @@ const AddLineItem = () => {
                         <Form noValidate validated={validated} onSubmit={handleSubmit}>
                             <Form.Group controlId="category">
                                 <Form.Label>Category</Form.Label>
-                                <Form.Select required>
-                                    {categories
-                                        .filter((category: Category) => category.direction === mode)
-                                        .map((category: Category) => (
-                                            <option key={category.id}>{category.name}</option>
-                                        ))}
-                                </Form.Select>
+                                <Select
+                                    onChange={(cats) => setSelectedCategories(cats.map((c) => c))}
+                                    isMulti
+                                    options={categories.filter((category: Category) => category.direction === mode)}
+                                    getOptionLabel={(option) => option.name}
+                                    getOptionValue={(option) => option.id}
+                                />
                             </Form.Group>
                             <Form.Group controlId="description">
                                 <Form.Label>Description</Form.Label>
