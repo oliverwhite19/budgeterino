@@ -11,5 +11,5 @@ export type budgetItem = {
     direction: string;
     value: number;
     currency?: string;
-    category: Category;
+    category?: Category;
 };

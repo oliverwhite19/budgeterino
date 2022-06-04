@@ -1,16 +1,9 @@
 import { styled } from '@stitches/react';
-import { useState } from 'react';
 import { Button, ListGroup } from 'react-bootstrap';
 import { Plus } from 'react-bootstrap-icons';
-import useStorage from '../../hooks/useStorage';
+import { categoryStore } from '../../library/storage/categories';
 import { Category } from '../../types';
 import CategoryItem from '../budget/CategoryItem';
-
-export const defaultCategories: Array<Category> = [
-    { direction: 'out', icon: 'bi bi-bag', color: '#488a82', name: 'Shopping' },
-    { direction: 'out', icon: 'bi bi-tags', color: '#f54266', name: 'Bills' },
-    { direction: 'out', icon: 'bi bi-controller', color: '#a11dad', name: 'Video Games' },
-];
 
 export const TitleContainer = styled('div', {
     display: 'flex',
@@ -20,9 +13,8 @@ export const TitleContainer = styled('div', {
 });
 
 const Categories = () => {
-    const { getItem } = useStorage();
-    const localCategories = getItem('categories', defaultCategories, 'local');
-    const [categories, setCategories] = useState(localCategories);
+    const categories = categoryStore((state) => state.categories);
+    const addCategory = categoryStore((state) => state.addCategory);
 
     return (
         <>

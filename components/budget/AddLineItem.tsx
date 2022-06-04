@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { Button, ButtonGroup, Container, Form, Modal, Row } from 'react-bootstrap';
-import useStorage from '../../hooks/useStorage';
+import { categoryStore } from '../../library/storage/categories';
 import { budgetItem, Category } from '../../types';
 import { defaultCategories } from '../settings/categories';
 
 const AddLineItem = ({ addItem }: { addItem: (item: budgetItem) => void }) => {
     const [show, setShow] = useState(false);
     const [validated, setValidated] = useState(false);
-    const { getItem, setItem } = useStorage();
-    const items = getItem('items', [], 'local');
-    const categories = getItem('categories', defaultCategories, 'local');
     const [mode, setMode] = useState('out');
+    const categories = categoryStore((state) => state.categories);
 
     const handleClose = () => setShow(false);
     const handleShow = (mode: string) => {
@@ -33,7 +31,6 @@ const AddLineItem = ({ addItem }: { addItem: (item: budgetItem) => void }) => {
             category: categories.find((category: Category) => category.name === event.target.category.value),
         };
         setValidated(true);
-        setItem('items', [...items, item], 'local');
         addItem(item);
 
         event.preventDefault();

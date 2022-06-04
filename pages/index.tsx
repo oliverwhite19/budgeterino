@@ -1,20 +1,22 @@
 import Day from '../components/budget/Day';
 import AddLineItem from '../components/budget/AddLineItem';
-import useStorage from '../hooks/useStorage';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { budgetItem } from '../types';
 import { addMonths, endOfMonth, format, isAfter, isBefore, parse, startOfMonth, subMonths } from 'date-fns';
-import { Button, Navbar } from 'react-bootstrap';
+import { Button, Navbar, Stack } from 'react-bootstrap';
 import { CaretLeft, CaretRight } from 'react-bootstrap-icons';
 import { styled } from '@stitches/react';
-import { defaultSettings } from './settings';
+import { budgetStore, settingsStore } from '../library/storage';
 
 export const TitleContainer = styled('div', {
     display: 'flex',
     width: '100%',
     justifyContent: 'space-between',
     marginRight: '15px',
+});
+const NavCountainer = styled(TitleContainer, {
+    justifyContent: 'space-around',
 });
 
 const itemsToDays = (items: budgetItem[], start: Date, end: Date): { [k: string]: budgetItem[] } => {
@@ -43,23 +45,20 @@ const itemsToDays = (items: budgetItem[], start: Date, end: Date): { [k: string]
 };
 
 const Budget = () => {
-    const { getItem } = useStorage();
-    const localItems = getItem('items', [], 'local');
-    const settings = getItem('settings', defaultSettings, 'local');
-    const [items, setItems] = useState(localItems);
+    const items = budgetStore((state) => state.budgetItems);
+    const addItem = budgetStore((state) => state.addItem);
+
+    const budgetMode = settingsStore((state) => state.budgetMode);
+    const budget = settingsStore((state) => state.budget);
 
     const [currentDate, setCurrentDate] = useState(new Date());
     const itemsAsDays = itemsToDays(items, startOfMonth(currentDate), endOfMonth(currentDate));
     const monthTotal = Object.values(itemsAsDays).reduce(
         (acc, items) =>
             acc +
-            items.reduce(
-                (accum, item) => (item.direction === 'out' || !settings.budgetMode ? accum - item.value : accum),
-                0,
-            ),
+            items.reduce((accum, item) => (item.direction === 'out' || !budgetMode ? accum - item.value : accum), 0),
         0,
     );
-    const budgetModeCounter = 2200;
     return (
         <>
             <TitleContainer>
@@ -72,12 +71,16 @@ const Budget = () => {
                 </Button>
             </TitleContainer>
             <div>
-                <AddLineItem addItem={(item) => setItems([...items, item])} />
+                <AddLineItem addItem={addItem} />
                 {Object.values(itemsAsDays).map((value) => (
                     <Day date={value[0].date} lineItems={value} key={value[0].date} />
                 ))}
             </div>
-            <Navbar fixed="bottom">{settings.budgetMode ? settings.budget + monthTotal : monthTotal}</Navbar>
+            <Navbar fixed="bottom">
+                <NavCountainer>
+                    <p>{budgetMode ? budget + monthTotal : monthTotal}</p>
+                </NavCountainer>
+            </Navbar>
         </>
     );
 };
