@@ -11,9 +11,11 @@ const LineItem = ({ description, direction, value, currency, categories }: LineI
             <Card>
                 <Card.Body>
                     <LineContainer>
-                        {categories.map((category) => (
-                            <CategoryItem category={category} />
-                        ))}
+                        <div>
+                            {categories.map((category) => (
+                                <CategoryItem key={category.id} category={category} />
+                            ))}
+                        </div>
                         <ValueContainer color={direction === 'in' ? `green` : 'red'}>
                             {direction === 'in' ? `+${value} ${currency ?? ''}` : `-${value} ${currency ?? ''}`}
                         </ValueContainer>

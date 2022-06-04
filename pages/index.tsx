@@ -5,9 +5,9 @@ import dynamic from 'next/dynamic';
 import { budgetItem } from '../types';
 import { addMonths, endOfMonth, format, isAfter, isBefore, isEqual, parse, startOfMonth, subMonths } from 'date-fns';
 import { Button, Navbar } from 'react-bootstrap';
-import { CaretLeft, CaretRight } from 'react-bootstrap-icons';
 import { styled } from '@stitches/react';
 import { budgetStore, settingsStore } from '../library/storage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const TitleContainer = styled('div', {
     display: 'flex',
@@ -66,11 +66,11 @@ const Budget = () => {
         <>
             <TitleContainer>
                 <Button variant="outline-info" onClick={() => setCurrentDate(subMonths(currentDate, 1))}>
-                    <CaretLeft />
+                    <FontAwesomeIcon icon={['fas', 'angle-left']} />
                 </Button>
                 <h1>{format(currentDate, 'MMMM')}</h1>
                 <Button variant="outline-info" onClick={() => setCurrentDate(addMonths(currentDate, 1))}>
-                    <CaretRight />
+                    <FontAwesomeIcon icon={['fas', 'angle-right']} />
                 </Button>
             </TitleContainer>
             <div>

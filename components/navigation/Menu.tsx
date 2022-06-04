@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { List } from 'react-bootstrap-icons';
 import { useRouter } from 'next/router';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Menu = () => {
     const [show, setShow] = useState(false);
@@ -11,13 +11,12 @@ const Menu = () => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
     return (
         <>
             <Nav fill variant="tabs" activeKey={router.asPath}>
                 <Nav.Item>
                     <Nav.Link onClick={handleShow}>
-                        <List />
+                        <FontAwesomeIcon icon={['fas', 'bars']} />
                     </Nav.Link>
                 </Nav.Item>
                 <Nav.Item>

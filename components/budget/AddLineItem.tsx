@@ -3,19 +3,19 @@ import { useState } from 'react';
 import { Button, ButtonGroup, Container, Form, Modal, Row } from 'react-bootstrap';
 import { budgetStore } from '../../library/storage';
 import { categoryStore } from '../../library/storage/categories';
-import { Category } from '../../types';
+import { Category, Direction } from '../../types';
 import Select from 'react-select';
 
 const AddLineItem = () => {
     const [show, setShow] = useState(false);
     const [validated, setValidated] = useState(false);
-    const [mode, setMode] = useState('out');
+    const [mode, setMode] = useState(Direction.OUT);
     const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
     const categories = categoryStore((state) => state.categories);
     const addItem = budgetStore((state) => state.addItem);
 
     const handleClose = () => setShow(false);
-    const handleShow = (mode: string) => {
+    const handleShow = (mode: Direction) => {
         setMode(mode);
         setShow(true);
     };
@@ -45,10 +45,10 @@ const AddLineItem = () => {
         <>
             <Row>
                 <ButtonGroup aria-label="Basic example">
-                    <Button variant="outline-danger" onClick={() => handleShow('out')}>
+                    <Button variant="outline-danger" onClick={() => handleShow(Direction.OUT)}>
                         Add New Expense
                     </Button>
-                    <Button variant="outline-success" onClick={() => handleShow('in')}>
+                    <Button variant="outline-success" onClick={() => handleShow(Direction.IN)}>
                         Add New Income
                     </Button>
                 </ButtonGroup>
