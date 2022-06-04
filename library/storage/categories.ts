@@ -10,9 +10,9 @@ export const categoryStore = create<CategoryState>()(
     persist(
         (set) => ({
             categories: [
-                { direction: 'out', icon: 'bi bi-bag', color: '#488a82', name: 'Shopping' },
-                { direction: 'out', icon: 'bi bi-tags', color: '#f54266', name: 'Bills' },
-                { direction: 'out', icon: 'bi bi-controller', color: '#a11dad', name: 'Video Games' },
+                { id: 'bS93oDHdUf', direction: 'out', icon: 'bi bi-bag', color: '#488a82', name: 'Shopping' },
+                { id: '_v8lsmv_2a', direction: 'out', icon: 'bi bi-tags', color: '#f54266', name: 'Bills' },
+                { id: 'yNHj_qHb7i', direction: 'out', icon: 'bi bi-controller', color: '#a11dad', name: 'Video Games' },
             ],
             addCategory: (category) => set((state) => ({ categories: [...state.categories, category] })),
         }),

@@ -3,8 +3,8 @@ import AddLineItem from '../components/budget/AddLineItem';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { budgetItem } from '../types';
-import { addMonths, endOfMonth, format, isAfter, isBefore, parse, startOfMonth, subMonths } from 'date-fns';
-import { Button, Navbar, Stack } from 'react-bootstrap';
+import { addMonths, endOfMonth, format, isAfter, isBefore, isEqual, parse, startOfMonth, subMonths } from 'date-fns';
+import { Button, Navbar } from 'react-bootstrap';
 import { CaretLeft, CaretRight } from 'react-bootstrap-icons';
 import { styled } from '@stitches/react';
 import { budgetStore, settingsStore } from '../library/storage';
@@ -18,12 +18,16 @@ export const TitleContainer = styled('div', {
 const NavCountainer = styled(TitleContainer, {
     justifyContent: 'space-around',
 });
+const Nav = styled(Navbar, {
+    backgroundColor: '#555555',
+});
 
 const itemsToDays = (items: budgetItem[], start: Date, end: Date): { [k: string]: budgetItem[] } => {
     const itemsInDays = items
         .filter((item) => {
             const itemDate = parse(item.date, 'yyyy-MM-dd', new Date());
-            return isBefore(itemDate, end) && isAfter(itemDate, start);
+
+            return isBefore(itemDate, end) && (isAfter(itemDate, start) || isEqual(itemDate, start));
         })
         .reduce((previousValue: { [k: string]: budgetItem[] }, currentValue) => {
             const dateString = currentValue.date;
@@ -46,7 +50,6 @@ const itemsToDays = (items: budgetItem[], start: Date, end: Date): { [k: string]
 
 const Budget = () => {
     const items = budgetStore((state) => state.budgetItems);
-    const addItem = budgetStore((state) => state.addItem);
 
     const budgetMode = settingsStore((state) => state.budgetMode);
     const budget = settingsStore((state) => state.budget);
@@ -71,16 +74,16 @@ const Budget = () => {
                 </Button>
             </TitleContainer>
             <div>
-                <AddLineItem addItem={addItem} />
+                <AddLineItem />
                 {Object.values(itemsAsDays).map((value) => (
                     <Day date={value[0].date} lineItems={value} key={value[0].date} />
                 ))}
             </div>
-            <Navbar fixed="bottom">
+            <Nav fixed="bottom">
                 <NavCountainer>
                     <p>{budgetMode ? budget + monthTotal : monthTotal}</p>
                 </NavCountainer>
-            </Navbar>
+            </Nav>
         </>
     );
 };

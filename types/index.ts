@@ -3,6 +3,7 @@ export type Category = {
     color: string;
     icon: string;
     direction: 'out' | 'in';
+    id: string;
 };
 
 export type budgetItem = {
@@ -11,5 +12,6 @@ export type budgetItem = {
     direction: string;
     value: number;
     currency?: string;
-    category?: Category;
+    category: Category;
+    id: string;
 };

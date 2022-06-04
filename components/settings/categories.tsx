@@ -1,9 +1,9 @@
 import { styled } from '@stitches/react';
-import { Button, ListGroup } from 'react-bootstrap';
-import { Plus } from 'react-bootstrap-icons';
+import { ListGroup } from 'react-bootstrap';
 import { categoryStore } from '../../library/storage/categories';
 import { Category } from '../../types';
 import CategoryItem from '../budget/CategoryItem';
+import AddCategory from './AddCategory';
 
 export const TitleContainer = styled('div', {
     display: 'flex',
@@ -14,15 +14,12 @@ export const TitleContainer = styled('div', {
 
 const Categories = () => {
     const categories = categoryStore((state) => state.categories);
-    const addCategory = categoryStore((state) => state.addCategory);
 
     return (
         <>
             <TitleContainer>
                 <h3>Categories</h3>
-                <Button variant="outline-success">
-                    <Plus />
-                </Button>
+                <AddCategory />
             </TitleContainer>
             <ListGroup>
                 {categories.map((category: Category, index: number) => (
