@@ -3,9 +3,14 @@ import Nav from 'react-bootstrap/Nav';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Switch from 'react-switch';
+import { settingsStore } from '../../library/storage';
 
 const Menu = () => {
     const [show, setShow] = useState(false);
+
+    const isSortedDate = settingsStore((state) => state.isSortedDate);
+    const setIsSortedDate = settingsStore((state) => state.setIsSortedDate);
 
     const router = useRouter();
 
@@ -30,7 +35,10 @@ const Menu = () => {
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Filters</Offcanvas.Title>
                 </Offcanvas.Header>
-                <Offcanvas.Body>Here is where the filters will be located</Offcanvas.Body>
+                <Offcanvas.Body>
+                    <p>Sort by date</p>
+                    <Switch onChange={setIsSortedDate} checked={isSortedDate} />
+                </Offcanvas.Body>
             </Offcanvas>
         </>
     );

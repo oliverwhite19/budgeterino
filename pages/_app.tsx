@@ -17,6 +17,7 @@ import {
     faHouse,
     faBasketShopping,
     faHouseMedical,
+    faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -34,6 +35,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         faHouse,
         faBasketShopping,
         faHouseMedical,
+        faTrash,
     );
 
     return (
